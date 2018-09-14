@@ -1,17 +1,12 @@
 module.exports = {
   staticFileGlobs: [
-    '/manifest.json',
-    '/bower_components/webcomponentsjs/webcomponents-lite.min.js',
-    '/images/*'
+    'manifest.json',
+    'images/*',
+    'src/**/*'
   ],
-  dynamicUrlToDependencies: {
-    '/': ['index.html']
-  },
-  navigateFallback: '/',
-  navigateFallbackWhitelist: [/^(?!.*\.html$|\/data\/).*/],
   runtimeCaching: [
     {
-      urlPattern: /https:\/\/cdn.ampproject.org\/.*\.js/,
+      urlPattern: /\/@webcomponents\/webcomponentsjs\//,
       handler: 'fastest',
       options: {
         cache: {

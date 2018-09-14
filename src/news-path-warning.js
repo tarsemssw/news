@@ -1,18 +1,19 @@
-<!--
+/**
 @license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+import '@polymer/iron-icon/iron-icon.js';
 
-<dom-module id="news-path-warning">
-  <template>
+class NewsPathWarning extends PolymerElement {
+  static get template() {
+    return html`
     <style>
       :host {
         display: block;
@@ -54,13 +55,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <iron-icon icon="error"></iron-icon>
       <h1>Sorry, we couldn't find that page.</h1>
     </div>
-   
-    <a href="/">Go to the home page</a>
 
-  </template>
-  <script>
-    Polymer({
-      is: 'news-path-warning'
-    });
-  </script>
-</dom-module>
+    <a href="/">Go to the home page</a>
+`;
+  }
+
+  static get is() { return 'news-path-warning'; }
+}
+
+customElements.define(NewsPathWarning.is, NewsPathWarning);

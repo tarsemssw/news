@@ -1,22 +1,20 @@
-<!--
+/**
 @license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import './news-img.js';
 
-<link rel="import" href="news-img.html">
-
-<dom-module id="news-list-featured-item">
-
-  <template>
-
+class NewsListFeaturedItem extends PolymerElement {
+  static get template() {
+    return html`
     <style>
 
       :host {
@@ -55,7 +53,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       .details {
-        @apply(--layout-horizontal);
+        @apply --layout-horizontal;
         font-size: 11px;
         font-weight: bold;
       }
@@ -85,12 +83,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           color: var(--app-cover-text-color);
         }
 
+        :host-context(.fixed-viewport-height) a {
+          height: var(--viewport-height);
+        }
+
         news-img {
           min-height: 60vh;
         }
 
+        :host-context(.fixed-viewport-height) news-img {
+          min-height: calc(var(--viewport-height) * 0.6);
+        }
+
         .scrim {
-          @apply(--layout-fit);
+          @apply --layout-fit;
           background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.25) 25%, rgba(0,0,0,0.25) 50%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,1) 100%);
         }
 
@@ -111,6 +117,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           display: -webkit-box;
           -webkit-line-clamp: 7;
           -webkit-box-orient: vertical;
+        }
+
+        :host-context(.fixed-viewport-height) h2 {
+          font-size: calc(var(--viewport-height) * 0.06);
+          line-height: calc(var(--viewport-height) * 0.07);
+          max-height: calc(var(--viewport-height) * 0.49);
         }
 
         .category {
@@ -138,7 +150,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* desktop large */
       @media (min-width: 1310px) {
         a {
-          @apply(--layout-horizontal);
+          @apply --layout-horizontal;
         }
 
         h2 {
@@ -147,7 +159,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
 
         news-img {
-          @apply(--layout-fit);
+          @apply --layout-fit;
         }
 
         .img-container {
@@ -165,13 +177,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     </style>
 
-    <a href$="[[item.href]]">
+    <a href\$="[[item.href]]">
       <div class="img-container">
         <news-img alt="[[item.headline]]" src="[[item.imageUrl]]" placeholder-src="[[item.placeholder]]"></news-img>
         <div class="scrim"></div>
       </div>
       <div class="headline">
-        <div class="category" hidden$="[[!item.category]]">[[item.category]]</div>
+        <div class="category" hidden\$="[[!item.category]]">[[item.category]]</div>
         <h2>[[item.headline]]</h2>
         <div class="details">
           <div class="time-ago">[[item.timeAgo]]</div>
@@ -180,22 +192,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <p>[[item.summary]]</p>
       </div>
     </a>
-  </template>
+`;
+  }
 
-  <script>
+  static get is() { return 'news-list-featured-item'; }
 
-    Polymer({
+  static get properties() { return {
 
-      is: 'news-list-featured-item',
+    item: Object
 
-      properties: {
+  }}
+}
 
-        item: Object
-
-      }
-
-    });
-
-  </script>
-
-</dom-module>
+customElements.define(NewsListFeaturedItem.is, NewsListFeaturedItem);

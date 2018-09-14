@@ -1,42 +1,28 @@
 # NEWS
 
-## Prerequisites
-
-### Polymer CLI
-
-Install [polymer-cli](https://github.com/Polymer/polymer-cli):
-(Need at least npm v0.3.0)
-
-    npm install -g polymer-cli
-
-### Google App Engine SDK
-
-Install [Google App Engine SDK](https://cloud.google.com/appengine/downloads)
-
 ## Setup
-
-    git clone https://github.com/polymer/news.git
-    cd news
-    bower install
-
-## Start the development server
-
-    dev_appserver.py .
+```bash
+$ git clone https://github.com/polymer/news.git
+$ cd news
+$ npm i
+$ npm start
+```
 
 ## Build
-
-    polymer build
+```bash
+$ npm run build
+```
 
 ## Test the build
+To test prpl-server build:
+```bash
+$ npm run serve:prpl-server
+```
+To test static build:
+```bash
+$ npm run serve:static
+```
 
-This command serves the minified version of the app in an unbundled state, as it would be served by a push-compatible server:
+## Deploying
 
-    dev_appserver.py build/unbundled
-
-This command serves the minified version of the app generated using fragment bundling:
-
-    dev_appserver.py build/bundled
-
-## Deploy to Google App Engine
-
-    gcloud app deploy build/bundled/app.yaml --project [YOUR_PROJECT_ID]
+Our [production deployment of NEWS](https://news.polymer-project.org/) is hosted on App Engine with Node.js. It can be deployed with [the same steps as PWA Starter Kit](https://polymer.github.io/pwa-starter-kit/building-and-deploying/#deploying-prpl-server).

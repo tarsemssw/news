@@ -1,21 +1,20 @@
-<!--
+/**
 @license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+import '@polymer/app-layout/app-drawer/app-drawer.js';
+import '@polymer/iron-selector/iron-selector.js';
 
-<dom-module id="news-drawer">
-
-  <template>
-
+class NewsDrawer extends PolymerElement {
+  static get template() {
+    return html`
     <style>
 
       app-drawer {
@@ -51,41 +50,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <app-drawer opened="{{drawerOpened}}" swipe-open tabindex="0">
-      <paper-icon-button icon="close" on-click="_closeDrawer"></paper-icon-button>
+      <paper-icon-button icon="close" on-click="_closeDrawer" aria-label="Close main navigation"></paper-icon-button>
       <iron-selector role="navigation" class="drawer-list" selected="[[category.name]]" attr-for-selected="name">
-        <template is="dom-repeat" items="[[categories]]" as="category" initial-count="9">
-          <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
-        </template>
+        <dom-repeat items="[[categories]]" as="category" initial-count="9">
+          <template>
+            <a name="[[category.name]]" href="/list/[[category.name]]">[[category.title]]</a>
+          </template>
+        </dom-repeat>
       </iron-selector>
     </app-drawer>
+`;
+  }
 
-  </template>
+  static get is() { return 'news-drawer'; }
 
-  <script>
+  static get properties() { return {
 
-    Polymer({
+    categories: Array,
 
-      is: 'news-drawer',
+    category: Object,
 
-      properties: {
+    drawerOpened: {
+      type: Boolean,
+      notify: true
+    }
 
-        categories: Array,
+  }}
 
-        category: Object,
+  _closeDrawer() {
+    this.drawerOpened = false;
+  }
+}
 
-        drawerOpened: {
-          type: Boolean,
-          notify: true
-        }
-
-      },
-
-      _closeDrawer: function() {
-        this.drawerOpened = false;
-      }
-
-    });
-
-  </script>
-
-</dom-module>
+customElements.define(NewsDrawer.is, NewsDrawer);

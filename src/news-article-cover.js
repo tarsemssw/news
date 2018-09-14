@@ -1,22 +1,20 @@
-<!--
+/**
 @license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+Copyright (c) 2018 The Polymer Project Authors. All rights reserved.
 This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
 The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
 The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+*/
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+import '@polymer/iron-icon/iron-icon.js';
+import './news-img.js';
 
-<link rel="import" href="news-img.html">
-
-<dom-module id="news-article-cover">
-
-  <template>
-
+class NewsArticleCover extends PolymerElement {
+  static get template() {
+    return html`
     <style>
       :host {
         display: block;
@@ -65,6 +63,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         object-fit: cover;
       }
 
+      :host-context(.fixed-viewport-height) .cover-img-container > news-img {
+        min-height: calc(var(--viewport-height) * 0.6);
+      }
+
       .timer-icon {
         margin-left: 30px;
       }
@@ -84,6 +86,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           color: var(--app-cover-text-color);
           padding: 0 24px;
           z-index: 1;
+        }
+
+        :host-context(.fixed-viewport-height) .cover-text {
+          height: var(--viewport-height);
         }
 
         .cover-text .category {
@@ -122,6 +128,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           -webkit-line-clamp: 7;
           -webkit-box-orient: vertical;
         }
+
+        :host-context(.fixed-viewport-height) h1 {
+          font-size: calc(var(--viewport-height) * 0.06);
+          line-height: calc(var(--viewport-height) * 0.07);
+          max-height: calc(var(--viewport-height) * 0.49);
+        }
       }
     </style>
 
@@ -139,26 +151,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </div>
 
     <div class="cover-img-container">
-      <news-img src="[[article.imageUrl]]" hidden$="[[!article.imageUrl]]"></news-img>
+      <news-img src="[[article.imageUrl]]" hidden\$="[[!article.imageUrl]]"></news-img>
       <div class="scrim"></div>
     </div>
-   
-  </template>
+`;
+  }
 
-  <script>
+  static get is() { return 'news-article-cover'; }
 
-    Polymer({
+  static get properties() { return {
 
-      is: 'news-article-cover',
+    article: Object
 
-      properties: {
+  }}
+}
 
-        article: Object
-
-      }
-
-    });
-
-  </script>
-
-</dom-module>
+customElements.define(NewsArticleCover.is, NewsArticleCover);
