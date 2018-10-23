@@ -197,7 +197,7 @@ class NewsApp extends PolymerElement {
     }
     if (!page) {
       // set default route if route path is empty
-      this.set('route.path', 'list/top_stories');
+      this.set('route.path', 'list/videos');
       return;
     }
     this.page = page;

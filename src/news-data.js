@@ -13,12 +13,8 @@ import { Debouncer } from '@polymer/polymer/lib/utils/debounce.js';
 import { timeOut } from '@polymer/polymer/lib/utils/async.js';
 
 let categoryList = [
-  {name: 'top_stories', title: 'Top Stories'},
-  {name: 'doodles', title: 'Doodles'},
-  {name: 'chrome', title: 'Chrome'},
-  {name: 'search', title: 'Search'},
-  {name: 'shopping_payments', title: 'Shopping & Payments'},
-  {name: 'nonprofits', title: 'Nonprofits'}
+  {name: 'videos', title: 'Video Status'},
+  {name: 'photos', title: 'Photos'}
 ];
 
 let textarea = document.createElement('textarea');
@@ -114,29 +110,33 @@ class NewsData extends PolymerElement {
       this._setFailure(false);
       return;
     }
-    this._fetch('data/' + category.name + '.json',
+    this._fetch('http://localhost:5051/temp',
       (response) => { this.set('category.items', this._parseCategoryItems(response)); },
       attempts || 1 /* attempts */);
   }
 
   _parseCategoryItems(response) {
+    var finalArray = response.result
+    console.log(finalArray.length)
     let items = [];
 
-    for (let i = 0, item; item = response[i]; ++i) {
+    for (let i = 0, item; item = finalArray[i]; ++i) {
+      console.log(i)
+      console.log(item)
       items.push({
         headline: this._unescapeText(item.title),
         href: this._getItemHref(item),
-        id: item.id,
+        id: item.objectId,
         imageUrl: this._getItemImage(item),
-        placeholder: item.placeholder,
-        category: item.category,
-        timeAgo: this._timeAgo(new Date(item.time).getTime()),
-        author: item.author,
-        summary: this._trimRight(item.summary, 100),
-        readTime: Math.max(2, Math.round(item.contentLength / 3000)) + ' min read'
+        placeholder: this._getItemImage(item), //item.placeholder,
+        category: item.category.objectId,
+        timeAgo: this._timeAgo(new Date(item.publishedAt).getTime()),
+        author:" item.author",
+        summary: this._trimRight(item.description, 100),
+        readTime: item.duration + ' min read'
       });
     }
-
+    console.log(items)
     return items;
   }
 
@@ -146,11 +146,13 @@ class NewsData extends PolymerElement {
   }
 
   _getItemHref(item) {
-    return item.id ? '/article/' + this.categoryName + '/' + encodeURIComponent(item.id) : null;
+    return "desi"
+    // return item.id ? '/article/' + this.categoryName + '/' + encodeURIComponent(item.id) : null;
   }
 
   _getItemImage(item) {
-    return item.imgSrc ? 'data/' + item.imgSrc : '';
+    return item.s3url_thumb;
+    // return item.imgSrc ? 'data/' + item.imgSrc : '';
   }
 
   _timeAgo(timestamp) {
